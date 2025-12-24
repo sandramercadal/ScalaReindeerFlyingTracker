@@ -13,10 +13,10 @@ case class HoursFlown(value: Int) //Total hours flown
 case class FitnessLevel(value: Int) //1-10
 
 trait MagicalFlyer {
-  def canFlyMagically: Boolean
+  def canFlyMagically: Boolean  //trait method
 
   def takeOff(): String = {
-    if (canFlyMagically) "Taking off into the Christmas night sky tonight!"
+    if (canFlyMagically) "Taking off into the Christmas night sky tonight!" //Trait uses this method that returns boolean
     else "Sorry no flying for me, I must stay at the North Pole tonight."
   }
 }
@@ -30,47 +30,58 @@ class Reindeer(val name: String,
   def canFly: Boolean = canFlyMagically.value
 
   def aboutReindeer(): String =
-    s"Hi!! I'm $name, a $age yr old reindeer!." +
-    s"Can I fly magically? $canFlyMagically"
-} //class closure
+    s"Hi!! I'm $name, a $age yr old reindeer! " +
+    s"Can I fly magically? $canFly!!"
+} //base class closure
 
-/**[COMPANION OBJ for BASE CLASS] Companion Objfor Reindeer - serves as a factory **/
+
+/**[COMPANION OBJ for BASE CLASS] for Reindeer - serves as a factory **/
 object Reindeer {
   def createReindeer(name: String,
                      age: Int,
-                     canFlyMagically: CanFlyMagically) : Reindeer = {
-    new Reindeer(name, age, canFlyMagically)
+                     magicalAbility: CanFlyMagically) : Reindeer = {
+    new Reindeer(name, age, magicalAbility)
   }
 } //companion object closure
 
-/** [JUNIOR REINDEER] */
+  /** [JUNIOR REINDEER] */
 class JuniorReindeer (name: String,
                       age: Int,
-                      canFlyMagically: CanFlyMagically,
-                      val healthCheck: Int, // 0-100%, needs to be at >70% to fly
-                      private val fitnessLevel: FitnessLevel)
-  extends Reindeer (name, age, canFlyMagically) with MagicalFlyer {
+                      magicalFlightAbility: CanFlyMagically,
+                      val healthCheck: Int, // 0-100%, diff % required depending on type of reindeer
+                      private val fitnessLevel: FitnessLevel) //Private field
+  extends Reindeer (name, age, magicalFlightAbility) with MagicalFlyer {
 
-  // Companion object for JuniorReindeer
-  object JuniorReindeer {
-    def createJuniorReindeer(name: String,
-                             age: Int,
-                             canFlyMagically: CanFlyMagically,
-                             healthCheck: Int,
-                             fitnessLevel: FitnessLevel): JuniorReindeer = {
-      new JuniorReindeer(name, age, canFlyMagically, healthCheck, fitnessLevel)
-    }
 
-    // Override trait method
+    // Override trait method [needed by trait MagicalFlyer]
+    override def canFlyMagically: Boolean = canFly //must be in class not comp obj
+
+    ///** Who will fly tonight? - Use private field through its public method */
+    //def isFitToFly: Boolean = {
+      //healthCheck >= 70 && getFitness >= 7 && canFly
+    //Add pattern matching here for diff categories of reindeers
+
 
     // Public method to read private encapsulation
 
     // Check who can fly tonight
 
-    // Companion object for JuniorReindeer
+}
 
-  } //JuniorReindeer class closure
 
-  object JuniorReindeerTrackerApp extends App {
+  // Companion object for JuniorReindeer
+  object JuniorReindeer {
+    def createJuniorReindeer(name: String,
+                             age: Int,
+                             magicalFlightAbility: CanFlyMagically,
+                             healthCheck: Int,
+                             fitnessLevel: FitnessLevel): JuniorReindeer = {
+      new JuniorReindeer(name, age, magicalFlightAbility, healthCheck, fitnessLevel)
+    }
+  }
+
+//Add a singleton object with mutable state
+
+  object JuniorReindeerTrackerApp extends App { //App outside of everything else
     // Your code runs here!
   }
