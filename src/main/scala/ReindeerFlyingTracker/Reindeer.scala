@@ -1,6 +1,15 @@
 /** SCALA BOOK CHAPTER 4
- Incorporating: 1.Case class, 2.Trait, 3.Private val, 4.Companion object,
- 5. Inheritance (extends with) 6. Methods with side effects  7. App trait extends App **/
+ Incorporating:
+ 1.Case class
+ 2.Classes and fields
+ 3.Singleton objects incl App trait
+ 4. Trait
+ 5. Private val
+ 6. Companion object
+ 7. Inheritance (extends with)
+ 8. Methods with side effects
+ 9. 1x var to show diff between val and var
+ 10. 1x procedure with two side effects performing I/O print action **/
 
 package ReindeerFlyingTracker
 
@@ -63,7 +72,16 @@ class JuniorReindeer (name: String,
     def juniorReindeerFitToFly: Boolean = {
     healthCheck >= 68 && juniorReindeerFitness >= 8 && canFly
     }
-}
+
+    // var field that can be mutated (unlike val)
+    var trainingHours: Int = 0
+    // Method with side effect - mutates trainingHours and prints (Unit return type = procedure)
+    def completeTrainingSession(hours: Int): Unit = {
+      trainingHours += hours
+      println(s"$name completed $hours hours of training! Total: $trainingHours hours")
+    }
+  }
+
   // Companion object for JuniorReindeer
   object JuniorReindeer {
     def createJuniorReindeer(name: String,
@@ -154,17 +172,17 @@ class ExperiencedReindeer(name: String,
           val experiencedFlying = experiencedTeam.filter(_.experiencedReindeerFitToFly)
           val eliteFlying = eliteTeam.filter(_.eliteFitToFly)
 
-          // Calculate total reindeers to fly
+          // Calculate total reindeer to fly
           val totalReindeer = juniorTeam.length + experiencedTeam.length + eliteTeam.length
-          val totalCleared = juniorFlying.length + experiencedFlying.length + eliteFlying.length
+          val totalFitToFly = juniorFlying.length + experiencedFlying.length + eliteFlying.length
 
           println("\n **********************************************")
           println("          SANTA'S REINDEER FLIGHT TRACKER")
           println(" **********************************************\n")
 
           println(s"   Total Reindeer: $totalReindeer")
-          println(s"   Fit to fly: $totalCleared")
-          println(s"   Not Flying: ${totalReindeer - totalCleared}\n")
+          println(s"   Fit to fly: $totalFitToFly")
+          println(s"   Not Flying: ${totalReindeer - totalFitToFly}\n")
 
           println(s"   Junior: ${juniorFlying.length}/${juniorTeam.length} fit to fly")
           println(s"   Experienced: ${experiencedFlying.length}/${experiencedTeam.length} fit to fly")
@@ -194,8 +212,7 @@ class ExperiencedReindeer(name: String,
       }
 
 
-  object ReindeerTrackerApp extends App { //App outside of everything else
-    // Run code here
+  object ReindeerTrackerApp extends App { //App outside of everything else -- Run code here
 
     // Create junior reindeer
     val rudolphJr = JuniorReindeer.createJuniorReindeer(
@@ -266,6 +283,15 @@ class ExperiencedReindeer(name: String,
       HoursFlown(380)
     )
 
+    val blitzen = ExperiencedReindeer.createExperiencedReindeer(
+      "Comet",
+      6,
+      CanFlyMagically(true),
+      healthCheck = 70,
+      FitnessLevel(7.9),
+      HoursFlown(490)
+    )
+
     // Create elite reindeer
     val rudolph = EliteReindeer.createEliteReindeer(
       "Rudolph",
@@ -300,11 +326,18 @@ class ExperiencedReindeer(name: String,
       "Can become invisible"
     )
 
-
-    // All Reindeer list
+    // List of all reindeer
     val juniorTeam: List[JuniorReindeer] = List(rudolphJr, blitzenJr, cupidJr, dasherJr, cometJr)
-    val experiencedTeam: List[ExperiencedReindeer] = List(comet, vixen, donner)
+    val experiencedTeam: List[ExperiencedReindeer] = List(comet, vixen, donner, blitzen)
     val eliteTeam: List[EliteReindeer] = List(rudolph, dasher, prancer)
+
+    // Use a var and side effects  (only used in Junior Reindeer)
+    println("\n ============TRAINING SESSION UPDATED REPORT =============================")
+    rudolphJr.completeTrainingSession(5) // Side effect: mutates trainingHours & prints
+    rudolphJr.completeTrainingSession(3) // Side effect: adds more hours
+    println(s"Rudolph Jr's total training: ${rudolphJr.trainingHours} hours")
+    println("==============END OF TRAINING SESSION REPORT ================================")
+
 
     // Generate Santa's Report
     SantaReport.generateReport(juniorTeam, experiencedTeam, eliteTeam)
