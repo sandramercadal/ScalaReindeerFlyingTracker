@@ -3,11 +3,11 @@
  1.Case class
  2.Classes and fields
  3.Singleton objects incl App trait
- 4. Trait
- 5. Private val
- 6. Companion object
+ 4. Trait x1
+ 5. Private val x2
+ 6. Companion objects
  7. Inheritance (extends with)
- 8. Methods with side effects
+ 8. Methods with side effects (mutates states and prints)
  9. 1x var to show diff between val and var
  10. 1x procedure with two side effects performing I/O print action **/
 
@@ -240,7 +240,7 @@ class ExperiencedReindeer(name: String,
     )
 
     val cometJr = JuniorReindeer.createJuniorReindeer(
-      "Dasher Jr",
+      "Comet Jr",
       6,
       CanFlyMagically(true),
       healthCheck = 83,
@@ -248,7 +248,7 @@ class ExperiencedReindeer(name: String,
     )
 
     val dasherJr = JuniorReindeer.createJuniorReindeer(
-      "Comet Jr",
+      "Dasher Jr",
       4,
       CanFlyMagically(true),
       healthCheck = 84,
@@ -284,7 +284,7 @@ class ExperiencedReindeer(name: String,
     )
 
     val blitzen = ExperiencedReindeer.createExperiencedReindeer(
-      "Comet",
+      "Blitzen",
       6,
       CanFlyMagically(true),
       healthCheck = 70,
